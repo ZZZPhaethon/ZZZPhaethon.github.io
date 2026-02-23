@@ -40,11 +40,16 @@ I recently have a great interest in Embodied AI. I am happy to discuss potential
 </div>
 </div>
 
-- [Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet](https://github.com), A, B, C, **CVPR 2020**
+- [Denoise and Align: Towards Source-Free UDA for Robust Panoramic Semantic Segmentation](https://github.com), **Yaowen Chang**, Zhen Cao, Zheng Xu, Xiaoxin Mi, Zheng Dong **CVPR 2026**
 
 # 🎖 Honors and Awards
-- *2021.10* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
-- *2021.09* Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ornare aliquet ipsum, ac tempus justo dapibus sit amet. 
+- *2024.06* Silver Award, National College Students Innovation & Entrepreneurship Competition
+- *2023.11* First Prize, “Challenge Cup” National College Students Extracurricular Academic Science and Technology Works Competition
+- *2023.11* National Undergraduate Innovation and Entrepreneurship Training Program (National “DaChuang”) — completed with a Good final evaluation
+- *2023.08* First Prize, National College Students Software Cup Competition
+- *2023.07* Meritorious Winner (M Award), Mathematical Contest in Modeling (MCM/ICM), USA
+- *2022.08* Wuhan University First-class Scholarship & Outstanding student
+- *2021.09* Wuhan University First-class Scholarship & Outstanding student
 
 # 📖 Educations
 - *2024.09 - 2025.09*, *Imperial College London*, MSc Environmental Data Science & Machine Learning. 
