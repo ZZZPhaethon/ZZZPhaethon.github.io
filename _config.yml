@@ -18,7 +18,7 @@ baidu_site_verification  :
 author:
   name             : "Yaowen Chang"
   avatar           : "images/avatar.jpg"   # 把你的头像放到 images/avatar.jpg
-  bio              : "MSc EDSML @ Imperial College London (2024–2025). Interested in semantic segmentation, source-free domain adaptation, and remote sensing."
+  bio              : "MSc in Imperial College London (2024–2025). Interested in semantic segmentation, source-free domain adaptation, and remote sensing."
   location         : "London, UK"
   employer         : "Imperial College London"
   pubmed           :
