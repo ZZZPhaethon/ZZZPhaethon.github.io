@@ -43,6 +43,8 @@ I recently have a great interest in Embodied AI. I am happy to discuss potential
 - [Denoise and Align: Towards Source-Free UDA for Robust Panoramic Semantic Segmentation](https://github.com), **Yaowen Chang**, Zhen Cao, Zheng Xu, Xiaoxin Mi, Zheng Dong **CVPR 2026**
 
 # 🎖 Honors and Awards
+- *2025.09* Master’s Degree with Distinction, Imperial College London
+- *2024.06* Outstanding Graduate, Wuhan University
 - *2024.06* Silver Award, National College Students Innovation & Entrepreneurship Competition
 - *2023.11* First Prize, “Challenge Cup” National College Students Extracurricular Academic Science and Technology Works Competition
 - *2023.11* National Undergraduate Innovation and Entrepreneurship Training Program (National “DaChuang”) — completed with a Good final evaluation
