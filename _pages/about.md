@@ -31,16 +31,16 @@ I recently have a great interest in Embodied AI. I am happy to discuss potential
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">CVPR 2026</div><img src='images/teaser.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
-[Denoise and Align: Towards Source-Free UDA for Robust Panoramic Semantic Segmentation](https://openaccess.thecvf.com/content_cvpr_2016/papers/He_Deep_Residual_Learning_CVPR_2016_paper.pdf)
+[Denoise and Align: Towards Source-Free UDA for Robust Panoramic Semantic Segmentation](https://arxiv.org/pdf/2603.25131)
 
 **Yaowen Chang**, Zhen Cao, Zheng Xu, Xiaoxin Mi, Zheng Dong
 
-[**Project**](https://scholar.google.com/citations?view_op=view_citation&hl=zh-CN&user=DhtAFkwAAAAJ&citation_for_view=DhtAFkwAAAAJ:ALROH1vI_8AC) <strong><span class='show_paper_citations' data='DhtAFkwAAAAJ:ALROH1vI_8AC'></span></strong>
+[**Project**](https://github.com/ZZZPhaethon/DAPASS) <strong><span class='show_paper_citations' data='DhtAFkwAAAAJ:ALROH1vI_8AC'></span></strong>
 - DAPASS achieves state-of-the-art performances on outdoor (Cityscapes-to-DensePASS) and indoor (Stanford2D3D) benchmarks, yielding 55.04% (+2.05%) and 70.38% (+1.54%) mIoU, respectively.
 </div>
 </div>
 
-- [Denoise and Align: Towards Source-Free UDA for Robust Panoramic Semantic Segmentation](https://github.com), **Yaowen Chang**, Zhen Cao, Zheng Xu, Xiaoxin Mi, Zheng Dong **CVPR 2026**
+- [Denoise and Align: Towards Source-Free UDA for Robust Panoramic Semantic Segmentation](https://github.com/ZZZPhaethon/DAPASS), **Yaowen Chang**, Zhen Cao, Zheng Xu, Xiaoxin Mi, Zheng Dong **CVPR 2026**
 
 # 🎖 Honors and Awards
 - *2025.09* Master’s Degree with Distinction, Imperial College London
