@@ -23,7 +23,7 @@ I recently have a great interest in Embodied AI. I am happy to discuss potential
 
 
 # 🔥 News
-- *2026.02*: &nbsp;🎉🎉 One paper is accepted to CVPR26.
+- *2026.02*: &nbsp;🎉🎉 One paper is accepted to CVPR26 (Highlight).
 
 
 # 📝 Publications 
