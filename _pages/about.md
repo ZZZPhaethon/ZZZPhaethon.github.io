@@ -2,606 +2,531 @@
 permalink: /
 layout: null
 ---
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Yaowen Chang — computer vision researcher working on panoramic perception, semantic segmentation, and geometry-aware visual intelligence.">
-  <title>Yaowen Chang</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yaowen Chang — Imperial College London</title>
+  <meta name="description" content="Yaowen Chang, PhD student at Imperial College London, researching computer vision, panoramic perception, and AI for environmental systems.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-      --canvas: #fbfcfe;
+      --bg: #ffffff;
       --surface: #ffffff;
-      --ink: #121826;
-      --muted: #687386;
-      --faint: #9aa4b3;
-      --line: #e6eaf0;
-      --blue: #2563eb;
-      --blue-soft: #eef4ff;
-      --teal: #0f766e;
-      --shadow: 0 16px 50px rgba(20, 35, 60, .06);
+      --text-primary: #000000;
+      --text-secondary: #4b5563;
+      --text-tertiary: #9ca3af;
+      --border: #e5e7eb;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-light: #eff6ff;
+      --looking-bg: #f9fafb;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --canvas: #0b0f16;
-        --surface: #111722;
-        --ink: #f6f8fb;
-        --muted: #a7b0bf;
-        --faint: #687386;
-        --line: #273142;
-        --blue: #78a7ff;
-        --blue-soft: #15274b;
-        --teal: #5eead4;
-        --shadow: 0 16px 50px rgba(0, 0, 0, .22);
+        --bg: #0a0a0a;
+        --surface: #0a0a0a;
+        --text-primary: #ffffff;
+        --text-secondary: #9ca3af;
+        --text-tertiary: #4b5563;
+        --border: #1f2937;
+        --accent: #60a5fa;
+        --accent-hover: #93c5fd;
+        --accent-light: #1e3a8a;
+        --looking-bg: #111827;
       }
     }
 
-    * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      color: var(--muted);
-      background:
-        linear-gradient(to right, transparent 0, transparent calc(100% - 1px), rgba(37,99,235,.035) calc(100% - 1px)) 0 0 / 72px 72px,
-        linear-gradient(to bottom, transparent 0, transparent calc(100% - 1px), rgba(37,99,235,.035) calc(100% - 1px)) 0 0 / 72px 72px,
-        var(--canvas);
-      font: 15px/1.75 "Manrope", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; text-decoration: none; transition: color .18s ease, border-color .18s ease, transform .18s ease; }
-    a:hover { color: var(--blue); }
-    ::selection { color: #fff; background: var(--blue); }
 
-    .page-shell {
-      width: min(1160px, calc(100% - 48px));
-      min-height: 100vh;
-      margin: 0 auto;
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1, h2, h3, .section-title, .vertical-nav a, .pub-venue, .badge {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    a { color: var(--text-primary); text-decoration: none; transition: var(--transition); }
+    a:hover { color: var(--accent); }
+
+    .app-container {
       display: grid;
-      grid-template-columns: 270px minmax(0, 1fr);
-      gap: clamp(56px, 8vw, 110px);
-      padding: 88px 0 64px;
+      grid-template-columns: 280px 1fr;
+      gap: 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 100px 24px;
     }
 
     .sidebar {
       position: sticky;
-      top: 56px;
-      align-self: start;
-      min-height: calc(100vh - 112px);
+      top: 100px;
+      height: calc(100vh - 200px);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
+
+    .sidebar-top { display: flex; flex-direction: column; align-items: flex-start; }
+
     .avatar {
-      width: 104px;
-      height: 104px;
-      display: block;
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
       object-fit: cover;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
       margin-bottom: 24px;
-      transition: transform .22s ease;
+      border: 1px solid var(--border);
+      transition: var(--transition);
     }
-    .avatar:hover { transform: translateY(-3px) rotate(-1deg); }
+    .avatar:hover { transform: scale(1.03); }
 
-    .name {
-      margin: 0;
-      color: var(--ink);
-      font-size: 2.05rem;
-      line-height: 1.05;
-      letter-spacing: -.055em;
+    .sidebar h1 {
+      font-size: 2rem;
       font-weight: 800;
-    }
-    .role {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: .9rem;
-      line-height: 1.6;
-    }
-    .role strong { color: var(--ink); font-weight: 700; }
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 18px;
-      padding: 7px 11px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--surface) 92%, transparent);
-      color: var(--ink);
-      font-size: .73rem;
-      font-weight: 700;
-      letter-spacing: .01em;
-    }
-    .pulse {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--teal);
-      box-shadow: 0 0 0 0 color-mix(in srgb, var(--teal) 44%, transparent);
-      animation: pulse 2.2s infinite;
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--teal) 42%, transparent); }
-      70% { box-shadow: 0 0 0 8px transparent; }
-      100% { box-shadow: 0 0 0 0 transparent; }
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin-bottom: 12px;
     }
 
-    .nav {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin: 44px 0 auto;
-    }
-    .nav a {
-      width: fit-content;
-      padding-left: 0;
-      border-left: 2px solid transparent;
-      color: var(--faint);
-      font: 500 .72rem/1.2 "DM Mono", monospace;
-      text-transform: uppercase;
-      letter-spacing: .11em;
-    }
-    .nav a:hover, .nav a.active {
-      padding-left: 12px;
-      border-color: var(--blue);
-      color: var(--blue);
-    }
-
-    .contact-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px 16px;
-      padding-top: 30px;
-      color: var(--muted);
-      font-size: .82rem;
-      font-weight: 700;
-    }
-    .contact-links a { border-bottom: 1px solid transparent; }
-    .contact-links a:hover { border-color: var(--blue); }
-
-    main { max-width: 730px; }
-    section {
-      scroll-margin-top: 48px;
-      padding-top: 8px;
-      margin-bottom: 84px;
-    }
-    section:first-child { padding-top: 0; }
-    .section-kicker {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 0 0 24px;
-      color: var(--ink);
-      font: 500 .72rem/1 "DM Mono", monospace;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-    }
-    .section-kicker::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--ink);
-      opacity: .85;
-    }
-    .about-copy {
-      color: var(--muted);
-      font-size: .96rem;
-    }
-    .about-copy p { margin: 0 0 14px; }
-    .about-copy strong { color: var(--ink); font-weight: 750; }
-    .about-copy a {
-      color: var(--ink);
-      font-weight: 700;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-color: color-mix(in srgb, var(--blue) 44%, transparent);
-    }
-    .about-copy a:hover { color: var(--blue); }
-
-    .focus-note {
-      margin-top: 25px;
-      padding: 14px 17px;
-      border: 1px solid color-mix(in srgb, var(--blue) 20%, var(--line));
-      border-left: 3px solid var(--blue);
-      border-radius: 0 10px 10px 0;
-      background: var(--blue-soft);
-      color: var(--ink);
-      font-size: .87rem;
-      font-weight: 600;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px 32px;
-      margin-top: 38px;
-    }
-    .mini-title {
-      margin: 0 0 13px;
-      color: var(--ink);
-      font: 500 .7rem/1 "DM Mono", monospace;
-      letter-spacing: .11em;
-      text-transform: uppercase;
-    }
-    .timeline-item {
-      position: relative;
-      padding: 0 0 14px 13px;
-      border-left: 2px solid var(--line);
-    }
-    .timeline-item + .timeline-item { margin-top: 4px; }
-    .timeline-item:hover { border-left-color: var(--blue); }
-    .timeline-item strong {
-      display: block;
-      margin-bottom: 2px;
-      color: var(--ink);
-      font-size: .88rem;
-      font-weight: 750;
-      line-height: 1.45;
-    }
-    .timeline-item span {
-      display: block;
-      color: var(--muted);
-      font-size: .78rem;
-      line-height: 1.55;
-    }
-
-    .publication-list { border-top: 1px solid var(--line); }
-    .publication {
-      display: grid;
-      grid-template-columns: 76px 1fr;
-      gap: 17px;
-      padding: 20px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .publication:hover .pub-title a { color: var(--blue); }
-    .pub-year {
-      padding-top: 4px;
-      color: var(--faint);
-      font: 500 .72rem/1 "DM Mono", monospace;
-      letter-spacing: .05em;
-    }
-    .pub-title {
-      margin: 0 0 7px;
-      color: var(--ink);
-      font-size: .98rem;
-      line-height: 1.45;
-      font-weight: 750;
-    }
-    .pub-authors {
-      margin: 0 0 9px;
-      color: var(--muted);
-      font-size: .8rem;
-      line-height: 1.55;
-    }
-    .pub-authors .me { color: var(--ink); font-weight: 800; }
-    .pub-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      color: var(--faint);
-      font: 500 .69rem/1.4 "DM Mono", monospace;
-      text-transform: uppercase;
-      letter-spacing: .045em;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 21px;
-      padding: 2px 7px;
-      border: 1px solid color-mix(in srgb, var(--blue) 37%, var(--line));
-      border-radius: 5px;
-      color: var(--blue);
-      background: var(--blue-soft);
-      font-size: .64rem;
-      font-weight: 700;
-      letter-spacing: .055em;
-    }
-    .link-chip {
-      color: var(--muted);
-      border-bottom: 1px solid var(--line);
-    }
-    .link-chip:hover { border-color: var(--blue); }
-
-    .project-list {
-      display: grid;
-      gap: 16px;
-    }
-    .project-card {
-      position: relative;
-      display: grid;
-      grid-template-columns: 128px 1fr;
-      gap: 20px;
-      min-height: 122px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: color-mix(in srgb, var(--surface) 95%, transparent);
-      box-shadow: 0 8px 28px rgba(30, 44, 69, .035);
-      overflow: hidden;
-    }
-    .project-card:hover {
-      transform: translateY(-3px);
-      border-color: color-mix(in srgb, var(--blue) 40%, var(--line));
-    }
-    .project-visual {
-      display: grid;
-      place-items: center;
-      border-radius: 9px;
-      overflow: hidden;
-      background: linear-gradient(135deg, var(--blue-soft), color-mix(in srgb, var(--blue-soft) 60%, var(--surface)));
-    }
-    .project-visual img {
-      width: 100%;
-      height: 100%;
-      min-height: 90px;
-      object-fit: cover;
-    }
-    .project-monogram {
-      color: var(--blue);
-      font: 500 1.05rem/1 "DM Mono", monospace;
-      letter-spacing: -.07em;
-    }
-    .project-card h3 {
-      margin: 1px 0 7px;
-      color: var(--ink);
-      font-size: .95rem;
-      line-height: 1.4;
-      font-weight: 780;
-    }
-    .project-card p {
-      margin: 0 0 10px;
-      color: var(--muted);
-      font-size: .81rem;
-      line-height: 1.6;
-    }
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      color: var(--faint);
-      font: 500 .65rem/1.2 "DM Mono", monospace;
-      letter-spacing: .045em;
-      text-transform: uppercase;
-    }
-    .project-tags span {
-      padding: 4px 6px;
-      border: 1px solid var(--line);
-      border-radius: 4px;
-    }
-
-    .awards { border-top: 1px solid var(--line); }
-    .award {
-      display: grid;
-      grid-template-columns: 1fr 72px;
-      gap: 14px;
-      align-items: baseline;
-      padding: 15px 0;
-      border-bottom: 1px dashed var(--line);
-    }
-    .award:last-child { border-bottom: 0; }
-    .award strong {
-      color: var(--ink);
-      font-size: .89rem;
-      font-weight: 650;
+    .sidebar-meta {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
       line-height: 1.5;
     }
-    .award time {
-      color: var(--faint);
-      text-align: right;
-      font: 500 .72rem/1 "DM Mono", monospace;
-      letter-spacing: .055em;
+    .sidebar-meta a { font-weight: 600; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--looking-bg);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-top: 16px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+      70% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
+      100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+
+    .vertical-nav { display: flex; flex-direction: column; gap: 12px; margin: 40px 0; }
+    .vertical-nav a {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      transition: var(--transition);
+      padding-left: 0;
+    }
+    .vertical-nav a:hover, .vertical-nav a.active {
+      color: var(--accent);
+      padding-left: 12px;
+      border-left: 2px solid var(--accent);
+    }
+
+    .sidebar-footer { display: flex; gap: 16px; font-size: 0.8rem; font-weight: 500; }
+    .sidebar-footer a { color: var(--text-secondary); }
+    .sidebar-footer a:hover { color: var(--accent); }
+
+    .content { max-width: 680px; }
+    section { padding-top: 40px; margin-bottom: 80px; }
+    section:first-of-type { padding-top: 0; }
+
+    .section-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--text-primary);
+      padding-bottom: 8px;
+    }
+
+    .about-text { font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); }
+    .about-text a { font-weight: 600; }
+
+    .looking-banner {
+      margin-top: 28px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-light);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 48px;
+    }
+    .info-card h3, .services-card h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .info-item {
+      padding: 10px 0;
+      border-left: 2px solid var(--border);
+      padding-left: 12px;
+      margin-bottom: 8px;
+      transition: var(--transition);
+    }
+    .info-item:hover { border-left-color: var(--accent); background: var(--looking-bg); }
+    .info-item strong {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+    .info-item span { font-size: 0.8rem; color: var(--text-secondary); display: block; line-height: 1.4; }
+
+    .scroll-container { overflow-y: auto; border-bottom: 1px solid var(--border); background: var(--surface); }
+    .scroll-container::-webkit-scrollbar { width: 4px; }
+    .scroll-container::-webkit-scrollbar-track { background: transparent; }
+    .scroll-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .scroll-container::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+    .pub-scroll-container { max-height: 520px; padding: 4px 16px 4px 0; }
+
+    .pub-item-minimal, .project-item-minimal { padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .pub-item-minimal:last-child, .project-item-minimal:last-child { border-bottom: none; }
+    .pub-info { display: flex; flex-direction: column; }
+    .pub-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+    .pub-title a { color: var(--text-primary); }
+    .pub-title a:hover { color: var(--accent); }
+    .pub-authors { font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px; line-height: 1.4; }
+    .pub-authors .me { font-weight: 700; color: var(--text-primary); }
+    .pub-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .pub-venue {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid var(--border);
+    }
+    .badge-highlight { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+    .badge-neutral { background: var(--looking-bg); color: var(--text-primary); border-color: var(--border); }
+
+    .project-row { display: grid; grid-template-columns: 128px 1fr; gap: 18px; align-items: center; }
+    .project-thumb {
+      width: 128px;
+      height: 84px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--looking-bg);
+    }
+    .project-placeholder {
+      display: grid;
+      place-items: center;
+      width: 128px;
+      height: 84px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--looking-bg);
+      color: var(--accent);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+    }
+    .project-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+    .awards-list { list-style: none; }
+    .award-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 0.95rem;
+    }
+    .award-item:last-child { border-bottom: none; }
+    .award-title { color: var(--text-primary); font-weight: 500; }
+    .award-date {
+      flex: 0 0 auto;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     footer {
-      grid-column: 2;
-      border-top: 1px solid var(--line);
-      padding-top: 24px;
-      color: var(--faint);
-      font: 500 .68rem/1.5 "DM Mono", monospace;
-      letter-spacing: .045em;
-      text-transform: uppercase;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 48px 24px;
+      text-align: center;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
-    .back-to-top { float: right; }
+    .footer-text {
+      max-width: 1100px;
+      margin: 0 auto;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
 
-    @media (max-width: 860px) {
-      .page-shell {
-        width: min(680px, calc(100% - 40px));
-        display: block;
-        padding-top: 44px;
-      }
-      .sidebar {
-        position: static;
-        min-height: 0;
-        display: block;
-        margin-bottom: 54px;
-      }
-      .nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px 18px;
-        margin: 32px 0 0;
-      }
-      .nav a { padding: 0; border: 0; }
-      .nav a:hover, .nav a.active { padding: 0; border: 0; }
-      .contact-links { padding-top: 22px; }
-      footer { margin-top: -15px; }
+    @media (max-width: 900px) {
+      .app-container { grid-template-columns: 1fr; gap: 48px; padding: 40px 24px; }
+      .sidebar { position: relative; top: 0; height: auto; gap: 32px; }
+      .vertical-nav { display: none; }
     }
     @media (max-width: 560px) {
-      .page-shell { width: min(100% - 30px, 680px); }
-      .two-col { grid-template-columns: 1fr; gap: 22px; }
-      .publication { grid-template-columns: 55px 1fr; gap: 12px; }
-      .project-card { grid-template-columns: 90px 1fr; gap: 14px; }
-      .project-visual img { min-height: 80px; }
-      .status { max-width: 100%; }
-      .back-to-top { display: none; }
+      .project-row { grid-template-columns: 90px 1fr; gap: 14px; }
+      .project-thumb, .project-placeholder { width: 90px; height: 76px; }
+      .award-item { align-items: flex-start; }
     }
   </style>
 </head>
 <body>
-  <div class="page-shell">
-    <aside class="sidebar" aria-label="Profile">
-      <div>
-        <img class="avatar" src="{{ '/images/avatar.jpg' | relative_url }}" alt="Portrait of Yaowen Chang">
-        <h1 class="name">Yaowen<br>Chang</h1>
-        <p class="role">
-          <strong>Computer Vision Researcher</strong><br>
-          MSc Graduate, Imperial College London
-        </p>
-        <div class="status"><span class="pulse" aria-hidden="true"></span>Open to research collaboration</div>
-
-        <nav class="nav" aria-label="Page sections">
-          <a href="#about" class="nav-link">About</a>
-          <a href="#publications" class="nav-link">Publication</a>
-          <a href="#projects" class="nav-link">Projects</a>
-          <a href="#awards" class="nav-link">Awards</a>
-        </nav>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <img class="avatar" src="{{ '/images/avatar.jpg' | relative_url }}" alt="Yaowen Chang">
+        <h1>Yaowen Chang</h1>
+        <div class="sidebar-meta">
+          PhD Student<br>
+          <a href="https://www.imperial.ac.uk/" target="_blank" rel="noopener">Imperial College London</a><br>
+          <span style="font-size: 0.8rem; color: var(--text-tertiary);">yaowenchang.ic@gmail.com</span>
+        </div>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>Open to research collaboration</span>
+        </div>
       </div>
 
-      <div class="contact-links">
+      <nav class="vertical-nav">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#publications" class="nav-link">Publications</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#awards" class="nav-link">Awards</a>
+      </nav>
+
+      <div class="sidebar-footer">
         <a href="https://scholar.google.com/citations?user=GppYpX0AAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
         <a href="https://github.com/ZZZPhaethon" target="_blank" rel="noopener">GitHub</a>
         <a href="mailto:yaowenchang.ic@gmail.com">Email</a>
       </div>
     </aside>
 
-    <main>
+    <main class="content">
       <section id="about">
-        <h2 class="section-kicker">About</h2>
-        <div class="about-copy">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-text">
           <p>
-            I am <strong>Yaowen Chang</strong>, an MSc graduate with Distinction in Environmental Data Science &amp; Machine Learning from <a href="https://www.imperial.ac.uk/" target="_blank" rel="noopener">Imperial College London</a>. I received my BEng in Spatial Informatics and Digital Technology from <a href="https://en.whu.edu.cn/" target="_blank" rel="noopener">Wuhan University</a>.
+            I am a PhD student at <a href="https://www.imperial.ac.uk/" target="_blank" rel="noopener">Imperial College London</a>. I obtained an MSc with Distinction in Environmental Data Science &amp; Machine Learning from Imperial College London and a BEng in Spatial Informatics and Digital Technology from <a href="https://en.whu.edu.cn/" target="_blank" rel="noopener">Wuhan University</a>.
           </p>
+          <br>
           <p>
-            My work sits at the intersection of <strong>computer vision, geometry-aware learning, and real-world environmental intelligence</strong>. I build robust visual systems for panoramic perception, semantic segmentation, remote sensing, and 3D understanding—especially where data are limited, spatially distorted, or deployed outside ideal laboratory settings.
+            My research lies at the intersection of <strong>computer vision</strong>, <strong>geometry-aware perception</strong>, and <strong>AI for environmental systems</strong>. I am particularly interested in panoramic understanding, semantic segmentation, source-free domain adaptation, remote sensing, and reliable learning for real-world visual and climate applications.
           </p>
         </div>
 
-        <div class="focus-note">
-          Current focus: panoramic reasoning and segmentation · efficient 3D/geometry-aware dense prediction · reliable AI for climate and carbon systems.
+        <div class="looking-banner">
+          Current interests: panoramic reasoning and segmentation · geometry-aware dense prediction · efficient and reliable AI for environmental intelligence.
         </div>
 
-        <div class="two-col" aria-label="Education and research interests">
-          <div>
-            <h3 class="mini-title">Education</h3>
-            <div class="timeline-item">
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Education</h3>
+            <div class="info-item">
+              <strong>PhD Student</strong>
+              <span>Imperial College London · Current</span>
+            </div>
+            <div class="info-item">
               <strong>MSc, Environmental Data Science &amp; Machine Learning</strong>
               <span>Imperial College London · 2024.09 – 2025.09<br>Graduated with Distinction</span>
             </div>
-            <div class="timeline-item">
+            <div class="info-item">
               <strong>BEng, Spatial Informatics &amp; Digital Technology</strong>
               <span>Wuhan University · 2020.09 – 2024.06</span>
             </div>
           </div>
-          <div>
-            <h3 class="mini-title">Research Themes</h3>
-            <div class="timeline-item">
+
+          <div class="info-card">
+            <h3>Research Focus</h3>
+            <div class="info-item">
               <strong>Panoramic &amp; Open-World Perception</strong>
-              <span>Source-free adaptation, reasoning segmentation, ERP geometry.</span>
+              <span>Source-free adaptation, 360° semantic segmentation, and language-guided reasoning.</span>
             </div>
-            <div class="timeline-item">
+            <div class="info-item">
               <strong>Geometry-Aware Visual Intelligence</strong>
-              <span>Dense prediction, 3D vision, efficient and reliable learning.</span>
+              <span>Dense prediction, 3D vision, and learning with limited supervision.</span>
+            </div>
+            <div class="info-item">
+              <strong>AI for Climate &amp; Infrastructure</strong>
+              <span>Reliable modelling and optimisation for environmental and carbon systems.</span>
             </div>
           </div>
         </div>
       </section>
 
       <section id="publications">
-        <h2 class="section-kicker">Selected Publication</h2>
-        <div class="publication-list">
-          <article class="publication">
-            <div class="pub-year">2026</div>
-            <div>
-              <h3 class="pub-title">
-                <a href="https://arxiv.org/abs/2603.25131" target="_blank" rel="noopener">Denoise and Align: Towards Source-Free UDA for Robust Panoramic Semantic Segmentation</a>
-              </h3>
-              <p class="pub-authors"><span class="me">Yaowen Chang</span>, Zhen Cao, Zheng Xu, Xiaoxin Mi, Zheng Dong</p>
-              <div class="pub-meta">
-                <span>CVPR 2026</span>
-                <span class="badge">Highlight</span>
-                <a class="link-chip" href="https://github.com/ZZZPhaethon/DAPASS" target="_blank" rel="noopener">Project ↗</a>
-                <a class="link-chip" href="https://arxiv.org/abs/2603.25131" target="_blank" rel="noopener">Paper ↗</a>
+        <h2 class="section-title">Selected Publications</h2>
+        <div class="pub-scroll-container scroll-container">
+          <div class="pub-list">
+            <div class="pub-item-minimal">
+              <div class="pub-info">
+                <div class="pub-title">
+                  <a href="https://arxiv.org/abs/2603.25131" target="_blank" rel="noopener">Denoise and Align: Towards Source-Free UDA for Robust Panoramic Semantic Segmentation</a>
+                </div>
+                <div class="pub-authors">
+                  <span class="me">Yaowen Chang</span>, Zhen Cao, Zheng Xu, Xiaoxin Mi, Zheng Dong
+                </div>
+                <div class="pub-meta">
+                  <span class="pub-venue">CVPR 2026</span>
+                  <span class="badge badge-highlight">Highlight</span>
+                  <a href="https://github.com/ZZZPhaethon/DAPASS" target="_blank" rel="noopener">Project</a>
+                  <a href="https://arxiv.org/abs/2603.25131" target="_blank" rel="noopener">Paper</a>
+                </div>
               </div>
             </div>
-          </article>
+          </div>
         </div>
       </section>
 
       <section id="projects">
-        <h2 class="section-kicker">Selected Projects</h2>
-        <div class="project-list">
-          <a class="project-card" href="https://github.com/ZZZPhaethon/DAPASS" target="_blank" rel="noopener">
-            <div class="project-visual"><img src="{{ '/images/teaser.png' | relative_url }}" alt="DAPASS panoramic semantic segmentation teaser"></div>
-            <div>
-              <h3>DAPASS · Panoramic Semantic Segmentation</h3>
-              <p>Source-free domain adaptation for robust 360° semantic segmentation, with confidence-guided denoising and cross-resolution alignment.</p>
-              <div class="project-tags"><span>SFUDA</span><span>360° Vision</span><span>Segmentation</span></div>
+        <h2 class="section-title">Selected Projects</h2>
+        <div class="scroll-container">
+          <div class="project-item-minimal">
+            <div class="project-row">
+              <img class="project-thumb" src="{{ '/images/teaser.png' | relative_url }}" alt="DAPASS teaser image">
+              <div class="pub-info">
+                <div class="pub-title"><a href="https://github.com/ZZZPhaethon/DAPASS" target="_blank" rel="noopener">DAPASS: Panoramic Source-Free Domain Adaptation</a></div>
+                <div class="project-desc">Robust 360° semantic segmentation through panoramic confidence-guided denoising and cross-resolution alignment.</div>
+                <div class="pub-meta"><span class="pub-venue">Panoramic Vision · SFUDA · Segmentation</span></div>
+              </div>
             </div>
-          </a>
+          </div>
 
-          <a class="project-card" href="https://github.com/ZZZPhaethon/VHR-Seg" target="_blank" rel="noopener">
-            <div class="project-visual"><span class="project-monogram">VHR<br>SEG</span></div>
-            <div>
-              <h3>VHR-Seg · Coarse-to-Fine Remote-Sensing Segmentation</h3>
-              <p>A high-resolution visual pipeline for mapping forest, roads, buildings, and fine-grained objects from UAV imagery.</p>
-              <div class="project-tags"><span>Remote Sensing</span><span>UAV</span><span>Dense Prediction</span></div>
+          <div class="project-item-minimal">
+            <div class="project-row">
+              <div class="project-placeholder">VHR<br>SEG</div>
+              <div class="pub-info">
+                <div class="pub-title"><a href="https://github.com/ZZZPhaethon/VHR-Seg" target="_blank" rel="noopener">VHR-Seg: Coarse-to-Fine Remote Sensing Segmentation</a></div>
+                <div class="project-desc">High-resolution UAV mapping for forest, roads, buildings, and fine-grained objects in complex mining environments.</div>
+                <div class="pub-meta"><span class="pub-venue">Remote Sensing · UAV · Dense Prediction</span></div>
+              </div>
             </div>
-          </a>
+          </div>
 
-          <a class="project-card" href="https://github.com/ZZZPhaethon/CCS_RLLLM" target="_blank" rel="noopener">
-            <div class="project-visual"><span class="project-monogram">CO₂<br>RL</span></div>
-            <div>
-              <h3>CCS-RLLLM · Carbon Transport Intelligence</h3>
-              <p>A research platform for modelling and optimising carbon-capture transport systems with operations research, reinforcement learning, and domain knowledge.</p>
-              <div class="project-tags"><span>AI for Climate</span><span>RL</span><span>Optimisation</span></div>
+          <div class="project-item-minimal">
+            <div class="project-row">
+              <div class="project-placeholder">CO₂<br>RL</div>
+              <div class="pub-info">
+                <div class="pub-title"><a href="https://github.com/ZZZPhaethon/CCS_RLLLM" target="_blank" rel="noopener">CCS-RLLLM: Carbon Transport Intelligence</a></div>
+                <div class="project-desc">A research platform for modelling and optimising carbon-capture transport and storage operations with RL, LLMs, and operations research.</div>
+                <div class="pub-meta"><span class="pub-venue">AI for Climate · RL · Optimisation</span></div>
+              </div>
             </div>
-          </a>
+          </div>
         </div>
       </section>
 
       <section id="awards">
-        <h2 class="section-kicker">Honours &amp; Awards</h2>
-        <div class="awards">
-          <div class="award"><strong>Master’s Degree with Distinction, Imperial College London</strong><time>2025</time></div>
-          <div class="award"><strong>Silver Award, National College Students Innovation &amp; Entrepreneurship Competition</strong><time>2024</time></div>
-          <div class="award"><strong>First Prize, Challenge Cup National Competition</strong><time>2023</time></div>
-          <div class="award"><strong>First Prize, National College Students Software Cup Competition</strong><time>2023</time></div>
-          <div class="award"><strong>Meritorious Winner, Mathematical Contest in Modeling (MCM/ICM)</strong><time>2023</time></div>
-          <div class="award"><strong>First-class Scholarship &amp; Outstanding Student, Wuhan University</strong><time>2021–23</time></div>
+        <h2 class="section-title">Honours &amp; Awards</h2>
+        <div class="awards-list">
+          <div class="award-item"><div class="award-title">Master’s Degree with Distinction, Imperial College London</div><div class="award-date">2025</div></div>
+          <div class="award-item"><div class="award-title">Outstanding Graduate, Wuhan University</div><div class="award-date">2024</div></div>
+          <div class="award-item"><div class="award-title">Silver Award, National College Students Innovation &amp; Entrepreneurship Competition</div><div class="award-date">2024</div></div>
+          <div class="award-item"><div class="award-title">First Prize, Challenge Cup National Competition</div><div class="award-date">2023</div></div>
+          <div class="award-item"><div class="award-title">First Prize, National College Students Software Cup Competition</div><div class="award-date">2023</div></div>
+          <div class="award-item"><div class="award-title">Meritorious Winner, Mathematical Contest in Modeling (MCM/ICM)</div><div class="award-date">2023</div></div>
         </div>
       </section>
     </main>
-
-    <footer>
-      © 2026 Yaowen Chang <a class="back-to-top" href="#about">Back to top ↑</a>
-    </footer>
   </div>
 
+  <footer>
+    <div class="footer-text">&copy; 2026 Yaowen Chang · Imperial College London</div>
+  </footer>
+
   <script>
-    (() => {
-      const sections = [...document.querySelectorAll("main section[id]")];
-      const links = [...document.querySelectorAll(".nav-link")];
-      const updateNav = () => {
-        const position = window.scrollY + 160;
-        let active = sections[0]?.id;
-        sections.forEach((section) => {
-          if (position >= section.offsetTop) active = section.id;
-        });
-        links.forEach((link) => {
-          link.classList.toggle("active", link.getAttribute("href") === `#${active}`);
-        });
-      };
-      window.addEventListener("scroll", updateNav, { passive: true });
-      window.addEventListener("resize", updateNav);
-      updateNav();
+    (function () {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.vertical-nav a');
+
+      function updateActiveNav() {
+        const scrollPosition = window.scrollY + 150;
+        let activeSectionId = '';
+
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+          activeSectionId = sections[sections.length - 1].id;
+        } else {
+          sections.forEach(section => {
+            if (scrollPosition >= section.offsetTop) activeSectionId = section.id;
+          });
+        }
+
+        if (activeSectionId) {
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${activeSectionId}`);
+          });
+        }
+      }
+
+      window.addEventListener('scroll', updateActiveNav, { passive: true });
+      window.addEventListener('resize', updateActiveNav);
+      updateActiveNav();
     })();
   </script>
 </body>
