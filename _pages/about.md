@@ -265,10 +265,12 @@ layout: null
     .project-thumb {
       width: 128px;
       height: 84px;
-      object-fit: cover;
+      display: block;
+      object-fit: contain;
+      padding: 4px;
       border-radius: 8px;
       border: 1px solid var(--border);
-      background: var(--looking-bg);
+      background: var(--surface);
     }
     .project-placeholder {
       display: grid;
@@ -459,7 +461,7 @@ layout: null
 
           <div class="project-item-minimal">
             <div class="project-row">
-              <div class="project-placeholder">VHR<br>SEG</div>
+              <img class="project-thumb" src="https://raw.githubusercontent.com/ZZZPhaethon/VHR-Seg/main/resources/framework.jpg" alt="VHR-Seg coarse-to-fine segmentation framework" loading="lazy">
               <div class="pub-info">
                 <div class="pub-title"><a href="https://github.com/ZZZPhaethon/VHR-Seg" target="_blank" rel="noopener">VHR-Seg: Coarse-to-Fine Remote Sensing Segmentation</a></div>
                 <div class="project-desc">High-resolution UAV mapping for forest, roads, buildings, and fine-grained objects in complex mining environments.</div>
@@ -470,7 +472,7 @@ layout: null
 
           <div class="project-item-minimal">
             <div class="project-row">
-              <div class="project-placeholder">CO₂<br>RL</div>
+              <img class="project-thumb" src="https://raw.githubusercontent.com/ZZZPhaethon/CCS_RLLLM/dev-refactor/assets/CCUSRL_overview.png" alt="CCS-RLLLM carbon transport intelligence overview" loading="lazy">
               <div class="pub-info">
                 <div class="pub-title"><a href="https://github.com/ZZZPhaethon/CCS_RLLLM" target="_blank" rel="noopener">CCS-RLLLM: Carbon Transport Intelligence</a></div>
                 <div class="project-desc">A research platform for modelling and optimising carbon-capture transport and storage operations with RL, LLMs, and operations research.</div>
@@ -530,4 +532,5 @@ layout: null
   </script>
 </body>
 </html>
+
 
