@@ -344,8 +344,9 @@ layout: null
   </style>
 </head>
 <body>
-  <div class="interactive-earth-banner" style="max-width:1100px;margin:48px auto 0;padding:0 24px;">
-    <iframe id="interactive-earth-frame" src="{{ '/assets/interactive-earth.html' | relative_url }}" title="Yaowen Chang: interactive Earth with orbiting satellites and animated introduction" style="display:block;width:100%;height:420px;border:0;" scrolling="no"></iframe>
+  <div class="interactive-earth-banner" role="dialog" aria-label="Explore Earth and enter Yaowen Chang’s homepage" style="max-width:1100px;margin:48px auto 0;padding:0 24px;">
+    <button type="button" id="skip-earth-intro">Skip intro ↗</button>
+    <iframe id="interactive-earth-frame" src="{{ '/assets/interactive-earth.html' | relative_url }}?intro=1" title="Yaowen Chang: interactive Earth with orbiting satellites and animated introduction" style="display:block;width:100%;height:420px;border:0;" scrolling="no"></iframe>
   </div>
   <script>
     (function () {
@@ -549,7 +550,30 @@ layout: null
       updateActiveNav();
     })();
   </script>
-</body>
+<style>
+.interactive-earth-banner{display:none}
+html.intro-active{overflow:hidden}
+html.intro-active .interactive-earth-banner{display:flex;position:fixed;inset:0;z-index:1000;background:var(--bg);max-width:none!important;margin:0!important;padding:20px!important;border:0;align-items:center;justify-content:center;flex-direction:column;overflow:auto;transition:opacity .5s}
+.interactive-earth-banner iframe{max-width:1100px;flex-shrink:0}
+html.intro-active .app-container,html.intro-active body>footer{visibility:hidden}
+html.intro-leaving .interactive-earth-banner{opacity:0;pointer-events:none}
+#skip-earth-intro{position:fixed;top:22px;right:28px;border:0;background:var(--bg);color:var(--text-secondary);font:500 12px 'Plus Jakarta Sans',sans-serif;padding:10px 14px;cursor:pointer;z-index:2}
+#replay-earth-intro{border:0;background:none;color:var(--accent);font:inherit;cursor:pointer;margin-left:16px}
+@media(prefers-reduced-motion:reduce){html.intro-active .interactive-earth-banner{transition:none}}
+</style>
+<script>
+(()=>{
+const root=document.documentElement,frame=document.getElementById('interactive-earth-frame'),banner=document.querySelector('.interactive-earth-banner'),content=document.querySelector('.app-container');let seen=false;
+try{seen=sessionStorage.getItem('earth-intro-seen')==='1'}catch{}
+function open(){root.classList.add('intro-active');content.inert=true;frame.contentWindow?.postMessage({type:'earth-replay'},location.origin);document.getElementById('skip-earth-intro').focus()}
+function close(){if(!root.classList.contains('intro-active'))return;root.classList.add('intro-leaving');try{sessionStorage.setItem('earth-intro-seen','1')}catch{}setTimeout(()=>{root.classList.remove('intro-active','intro-leaving');content.inert=false;const target=content.querySelector('h1');target.setAttribute('tabindex','-1');target.focus({preventScroll:true});window.scrollTo(0,0)},matchMedia('(prefers-reduced-motion:reduce)').matches?0:500)}
+document.getElementById('skip-earth-intro').onclick=close;
+window.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===frame.contentWindow&&e.data?.type==='earth-enter')close()});
+const replay=document.createElement('button');replay.id='replay-earth-intro';replay.type='button';replay.textContent='Explore Earth ↗';replay.onclick=open;document.querySelector('.footer-text').append(replay);
+if(!seen&&!location.hash)open();
+})();
+</script></body>
 </html>
 
 
