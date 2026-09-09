@@ -17,7 +17,7 @@ img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.hei
 img.onerror=()=>{status.textContent='Earth texture could not load.'};
 function sync(){play.textContent=playing?'Pause':'Rotate';play.setAttribute('aria-pressed',String(playing))}sync();
 const introMode=new URLSearchParams(location.search).has('intro');
-let flight=null,down=null;
+let flight=null,down=null,sleeping=false;
 if(introMode){document.documentElement.classList.add('entrance-mode');canvas.setAttribute('role','button');canvas.setAttribute('aria-label','Enter homepage: fly to Imperial College London, South Kensington');status.textContent='Click Earth to visit South Kensington';}
 function enter(){
  if(!introMode||flight)return;
@@ -32,9 +32,13 @@ canvas.addEventListener('pointermove',e=>{if(down&&Math.hypot(e.clientX-down.x,e
 canvas.addEventListener('pointerup',e=>{if(down&&!down.moved){const rect=canvas.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width-.5,y=(e.clientY-rect.top)/rect.height-.5;if(Math.hypot(x,y)<.29*zoom)enter()}down=null});
 canvas.addEventListener('pointercancel',()=>{down=null});
 canvas.addEventListener('keydown',e=>{if(introMode&&(e.key==='Enter'||e.key===' ')){e.preventDefault();enter()}});
-window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&&e.data?.type==='earth-replay'){flight=null;playing=!reduced.matches;sync();yaw=.2;pitch=.13;zoom=1;dirty=true;document.documentElement.classList.remove('flying','arrived');status.textContent='Click Earth to visit South Kensington'}});
+window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&&e.data?.type==='earth-replay'){sleeping=false;flight=null;playing=!reduced.matches;sync();yaw=.2;pitch=.13;zoom=1;dirty=true;document.documentElement.classList.remove('flying','arrived');status.textContent='Click Earth to visit South Kensington'}});
+const globeBuffer=document.createElement('canvas');globeBuffer.width=canvas.width;globeBuffer.height=canvas.height;
+const globeContext=globeBuffer.getContext('2d'),globeFrame=ctx.createImageData(canvas.width,canvas.height);
+window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===parent&&e.data?.type==='earth-sleep')sleeping=true});
 function draw(){
- const w=canvas.width,h=canvas.height,frame=ctx.createImageData(w,h),out=frame.data,r=w*.29*zoom;
+ const w=canvas.width,h=canvas.height,frame=globeFrame,out=frame.data,r=w*.29*zoom;
+ out.fill(0);
  const cp=Math.cos(pitch),sp=Math.sin(pitch),cy=Math.cos(yaw),sy=Math.sin(yaw),tw=texture.width,th=texture.height,tex=texture.data;
  for(let py=0;py<h;py++)for(let px=0;px<w;px++){
   let nx=(px-w/2)/r,ny=-(py-h/2)/r,q=nx*nx+ny*ny;if(q>1)continue;
@@ -57,14 +61,25 @@ function draw(){
  for(const s of [-1,1]){poly([[s*10,-6],[s*33,-10],[s*33,6],[s*10,10]],'#0b203d','#8294a7');poly([[s*10,10],[s*33,6],[s*33,9],[s*10,13]],'#071425');for(const u of [16,22,28])line([[s*u,-6-(u-10)*4/23],[s*u,10-(u-10)*4/23]],'#31537c');line([[s*10,2],[s*33,-2]],'#31537c');line([[s*6,2],[s*10,2]],'#d0dae3',1.6)}
  poly([[-7,-10],[4,-14],[10,-6],[-2,-2]],'#edf3f8');poly([[-7,-10],[-2,-2],[-2,13],[-7,6]],'#625032');poly([[-2,-2],[10,-6],[10,9],[-2,13]],'#b8995f');line([[0,0],[7,2],[1,6],[8,7]],'#dac69a');poly([[-4,-8],[2,-10],[5,-6],[-1,-4]],'#142538','#b8ced9');line([[6,-11],[12,-20]],'#dbe4ec');poly([[8,-21],[16,-18],[13,-15]],'#c4d2de');line([[-6,11],[-9,18]],'#d1dce5');ctx.restore();
  }}
- satellites(false);const buffer=document.createElement('canvas');buffer.width=w;buffer.height=h;buffer.getContext('2d').putImageData(frame,0,0);ctx.drawImage(buffer,0,0);satellites(true);
+ satellites(false);globeContext.putImageData(frame,0,0);ctx.drawImage(globeBuffer,0,0);satellites(true);
  if(flight&&performance.now()-flight.start>2400){
   const opacity=Math.min(1,(performance.now()-flight.start-2400)/500);
   ctx.save();ctx.globalAlpha=opacity;ctx.strokeStyle='#2563eb';ctx.fillStyle='#60a5fa';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(w/2,h/2,10,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(w/2,h/2,3,0,Math.PI*2);ctx.fill();ctx.restore();
  }
 
 }
-function tick(t){const dt=Math.min(.05,(t-lastTime)/1000||0);lastTime=t;if(flight){const age=t-flight.start,u=Math.min(1,age/3000),ease=u*u*(3-2*u);yaw=flight.yaw+flight.delta*ease;pitch=flight.pitch+(51.4983*Math.PI/180-flight.pitch)*ease;zoom=flight.zoom+(2.45-flight.zoom)*ease;orbitTime+=dt*.24;dirty=true;if(age>=3000){status.textContent='Imperial College London · South Kensington campus';document.documentElement.classList.add('arrived')}if(age>4300&&!flight.sent){flight.sent=true;parent.postMessage({type:'earth-enter'},location.origin)}}else if(playing&&!drag&&!document.hidden){yaw+=dt*.14;orbitTime+=dt*.24;dirty=true}if(dirty&&texture){draw();dirty=false}requestAnimationFrame(tick)}
+function tick(t){
+ const dt=Math.min(.05,(t-lastTime)/1000||0);lastTime=t;if(sleeping){requestAnimationFrame(tick);return;}
+ if(flight){
+  const age=t-flight.start,u=Math.min(1,age/3000),ease=u*u*u*(u*(u*6-15)+10);
+  yaw=flight.yaw+flight.delta*ease;pitch=flight.pitch+(51.4983*Math.PI/180-flight.pitch)*ease;
+  const travel=Math.min(1,age/4500),push=travel*travel*(3-2*travel);
+  zoom=flight.zoom*Math.exp(Math.log(3.15/flight.zoom)*push);orbitTime+=dt*.24;dirty=true;
+  if(age>=2600&&!flight.arrived){flight.arrived=true;status.textContent='Imperial College London · South Kensington campus';document.documentElement.classList.add('arrived')}
+  if(age>=2600&&!flight.sent){flight.sent=true;parent.postMessage({type:'earth-map-start'},location.origin)}
+ }else if(playing&&!drag&&!document.hidden){yaw+=dt*.14;orbitTime+=dt*.24;dirty=true}
+ if(dirty&&texture){draw();dirty=false}requestAnimationFrame(tick)
+}
 function setZoom(v){zoom=Math.max(.72,Math.min(1.13,v));dirty=true}
 canvas.addEventListener('pointerdown',e=>{if(flight)return;drag=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId)});
 canvas.addEventListener('pointermove',e=>{if(!drag)return;yaw-=(e.clientX-lastX)*.009;pitch=Math.max(-1.3,Math.min(1.3,pitch+(e.clientY-lastY)*.009));lastX=e.clientX;lastY=e.clientY;dirty=true});
@@ -80,7 +95,7 @@ reduced.addEventListener('change',e=>{if(e.matches){playing=false;sync()}});
 </style><script>
 (()=>{const lines=[...document.querySelectorAll('.earth-copy h1 .type-live, .earth-copy p .type-live')],reduce=matchMedia('(prefers-reduced-motion: reduce)');let start=null,elapsed=0;
 function complete(){lines.forEach(l=>{l.textContent=l.dataset.text;l.classList.remove('typing')})}
-function render(t){let remaining=t-250;for(const l of lines){const full=l.dataset.text,n=Math.max(0,Math.min(full.length,Math.floor(remaining/50)));l.textContent=full.slice(0,n);l.classList.toggle('typing',remaining>=0&&remaining<full.length*50);remaining-=full.length*50+320}}
+function render(t){let remaining=t-250;for(const l of lines){const full=l.dataset.text,n=Math.max(0,Math.min(full.length,Math.floor(remaining/50)));const next=full.slice(0,n);if(l.textContent!==next)l.textContent=next;l.classList.toggle('typing',remaining>=0&&remaining<full.length*50);remaining-=full.length*50+320}}
 function frame(t){if(start===null)start=t;const dt=Math.min(60,t-start);start=t;if(reduce.matches){complete()}else if(!document.hidden&&document.getElementById('earth-play')?.getAttribute('aria-pressed')!=='false'){elapsed=(elapsed+dt)%14400;render(elapsed)}requestAnimationFrame(frame)}
 if(reduce.matches)complete();else render(0);requestAnimationFrame(frame);
 })();
@@ -124,5 +139,12 @@ if(reduce.matches)complete();else render(0);requestAnimationFrame(frame);
 .entrance-mode.flying .earth-view{transform:translateY(-28px) scale(1.18)}
 .entrance-mode.arrived .earth-view small{color:var(--hero-blue);font-weight:600}
 @media(max-height:650px){.entrance-mode .earth-copy h1{font-size:28px}.entrance-mode .earth-copy::before{margin-bottom:8px}.entrance-mode .earth-copy h1{margin-bottom:10px}.entrance-mode .earth-view{width:210px}.entrance-mode .earth-hero{padding-top:6px!important}}
+@media(prefers-reduced-motion:reduce){.entrance-mode .earth-copy,.entrance-mode .earth-view{transition:none}}
+</style><style>
+.entrance-mode .earth-copy{transition:opacity 1.4s cubic-bezier(.22,1,.36,1),transform 1.8s cubic-bezier(.22,1,.36,1)}
+.entrance-mode.flying .earth-copy{opacity:0;transform:translateY(-18px)}
+.entrance-mode .earth-view{will-change:transform;transition:transform 4.5s cubic-bezier(.45,0,.25,1)}
+.entrance-mode.flying .earth-view{transform:translateY(-36px) scale(1.1)}
+.entrance-mode .earth-view small{transition:opacity .6s,color .6s}
 @media(prefers-reduced-motion:reduce){.entrance-mode .earth-copy,.entrance-mode .earth-view{transition:none}}
 </style></html>

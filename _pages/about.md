@@ -342,9 +342,11 @@ layout: null
     .app-container{padding-top:48px}
     @media(max-width:768px){.interactive-earth-banner{margin-top:20px!important}.app-container{padding-top:32px}}
   </style>
+<link rel="stylesheet" href="{{ '/assets/vendor/leaflet/leaflet.css' | relative_url }}">
 </head>
 <body>
   <div class="interactive-earth-banner" role="dialog" aria-label="Explore Earth and enter Yaowen Chang’s homepage" style="max-width:1100px;margin:48px auto 0;padding:0 24px;">
+    <div id="campus-flight" hidden><div id="campus-map"></div><div id="campus-caption" role="status" aria-live="polite"></div></div>
     <button type="button" id="skip-earth-intro">Skip intro ↗</button>
     <iframe id="interactive-earth-frame" src="{{ '/assets/interactive-earth.html' | relative_url }}?intro=1" title="Yaowen Chang: interactive Earth with orbiting satellites and animated introduction" style="display:block;width:100%;height:420px;border:0;" scrolling="no"></iframe>
   </div>
@@ -565,15 +567,38 @@ html.intro-leaving .interactive-earth-banner{opacity:0;pointer-events:none}
 (()=>{
 const root=document.documentElement,frame=document.getElementById('interactive-earth-frame'),banner=document.querySelector('.interactive-earth-banner'),content=document.querySelector('.app-container');let seen=false;
 try{seen=sessionStorage.getItem('earth-intro-seen')==='1'}catch{}
-function open(){root.classList.add('intro-active');content.inert=true;frame.contentWindow?.postMessage({type:'earth-replay'},location.origin);document.getElementById('skip-earth-intro').focus()}
-function close(){if(!root.classList.contains('intro-active'))return;root.classList.add('intro-leaving');try{sessionStorage.setItem('earth-intro-seen','1')}catch{}setTimeout(()=>{root.classList.remove('intro-active','intro-leaving');content.inert=false;const target=content.querySelector('h1');target.setAttribute('tabindex','-1');target.focus({preventScroll:true});window.scrollTo(0,0)},matchMedia('(prefers-reduced-motion:reduce)').matches?0:500)}
+function open(){window.resetCampusFlight?.();root.classList.add('intro-active');content.inert=true;frame.contentWindow?.postMessage({type:'earth-replay'},location.origin);document.getElementById('skip-earth-intro').focus()}
+function close(){
+ if(!root.classList.contains('intro-active')||root.classList.contains('intro-leaving'))return;
+ window.scrollTo(0,0);root.classList.add('intro-leaving');
+ try{sessionStorage.setItem('earth-intro-seen','1')}catch{}
+ setTimeout(()=>{root.classList.remove('intro-active','intro-leaving');window.resetCampusFlight?.();content.inert=false;const target=content.querySelector('h1');target.setAttribute('tabindex','-1');target.focus({preventScroll:true});frame.contentWindow?.postMessage({type:'earth-sleep'},location.origin)},matchMedia('(prefers-reduced-motion:reduce)').matches?0:1200)
+}
 document.getElementById('skip-earth-intro').onclick=close;
 window.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
-window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===frame.contentWindow&&e.data?.type==='earth-enter')close()});
+window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==frame.contentWindow)return;if(e.data?.type==='earth-enter')close();if(e.data?.type==='earth-map-start')window.startCampusFlight?.()});
+window.addEventListener('campus-arrived',close);
 const replay=document.createElement('button');replay.id='replay-earth-intro';replay.type='button';replay.textContent='Explore Earth ↗';replay.onclick=open;document.querySelector('.footer-text').append(replay);
 if(!seen&&!location.hash)open();
 })();
-</script></body>
+</script><style>
+html.intro-active .interactive-earth-banner{transition:opacity 1.2s cubic-bezier(.4,0,.2,1);will-change:opacity}
+html.intro-active.intro-leaving .app-container,html.intro-active.intro-leaving body>footer{visibility:visible;animation:homepage-arrival 1.2s cubic-bezier(.22,1,.36,1) both}
+@keyframes homepage-arrival{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){html.intro-active .interactive-earth-banner{transition:none}html.intro-active.intro-leaving .app-container,html.intro-active.intro-leaving body>footer{animation:none}}
+</style><style>
+#campus-flight{position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none;transition:opacity 1.3s cubic-bezier(.4,0,.2,1);background:#0a1522}
+#campus-flight[hidden]{display:none}#campus-map{position:absolute;inset:0;background:#0a1522}
+html.campus-flying #campus-flight{opacity:1;pointer-events:auto}
+html.campus-flying #interactive-earth-frame{opacity:0;transition:opacity 1.3s}
+#campus-caption{position:absolute;bottom:58px;left:50%;transform:translateX(-50%);color:white;background:#06101bd9;border:1px solid #ffffff25;border-radius:30px;padding:12px 22px;max-width:85%;text-align:center;font:500 13px/1.5 'Plus Jakarta Sans',sans-serif;z-index:500;backdrop-filter:blur(12px)}
+#skip-earth-intro{z-index:1001}
+.leaflet-control-attribution{font-size:9px!important}
+@media(prefers-reduced-motion:reduce){#campus-flight{transition:none}}
+</style>
+<script src="{{ '/assets/vendor/leaflet/leaflet.js' | relative_url }}"></script>
+<script src="{{ '/assets/campus-flight.js' | relative_url }}"></script>
+</body>
 </html>
 
 
