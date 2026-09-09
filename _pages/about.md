@@ -339,6 +339,20 @@ layout: null
   </style>
 </head>
 <body>
+  <div class="interactive-earth-banner" style="max-width:1100px;margin:40px auto 0;padding:0 24px;">
+    <iframe id="interactive-earth-frame" src="{{ '/assets/interactive-earth.html' | relative_url }}" title="Yaowen Chang: interactive Earth with orbiting satellites and animated introduction" style="display:block;width:100%;height:900px;border:0;border-radius:24px;" scrolling="no"></iframe>
+  </div>
+  <script>
+    (function () {
+      const earthFrame = document.getElementById('interactive-earth-frame');
+      window.addEventListener('message', function (event) {
+        if (event.origin !== window.location.origin || event.source !== earthFrame.contentWindow) return;
+        if (event.data && event.data.type === 'earth-height' && Number.isFinite(event.data.height)) {
+          earthFrame.style.height = Math.max(300, Math.min(1800, event.data.height)) + 'px';
+        }
+      });
+    })();
+  </script>
   <div class="app-container">
     <aside class="sidebar">
       <div class="sidebar-top">
