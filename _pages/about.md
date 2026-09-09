@@ -337,10 +337,15 @@ layout: null
       .award-item { align-items: flex-start; }
     }
   </style>
+<style>
+    .interactive-earth-banner{border-bottom:1px solid var(--border)}
+    .app-container{padding-top:48px}
+    @media(max-width:768px){.interactive-earth-banner{margin-top:20px!important}.app-container{padding-top:32px}}
+  </style>
 </head>
 <body>
-  <div class="interactive-earth-banner" style="max-width:1100px;margin:40px auto 0;padding:0 24px;">
-    <iframe id="interactive-earth-frame" src="{{ '/assets/interactive-earth.html' | relative_url }}" title="Yaowen Chang: interactive Earth with orbiting satellites and animated introduction" style="display:block;width:100%;height:900px;border:0;border-radius:24px;" scrolling="no"></iframe>
+  <div class="interactive-earth-banner" style="max-width:1100px;margin:48px auto 0;padding:0 24px;">
+    <iframe id="interactive-earth-frame" src="{{ '/assets/interactive-earth.html' | relative_url }}" title="Yaowen Chang: interactive Earth with orbiting satellites and animated introduction" style="display:block;width:100%;height:420px;border:0;" scrolling="no"></iframe>
   </div>
   <script>
     (function () {
