@@ -348,7 +348,7 @@ layout: null
   <div class="interactive-earth-banner" role="dialog" aria-label="Explore Earth and enter Yaowen Chang’s homepage" style="max-width:1100px;margin:48px auto 0;padding:0 24px;">
     <div id="campus-flight" hidden><div id="campus-map"></div><div id="campus-caption" role="status" aria-live="polite"></div></div>
     <button type="button" id="skip-earth-intro">Skip intro ↗</button>
-    <iframe id="interactive-earth-frame" src="{{ '/assets/interactive-earth.html' | relative_url }}?intro=1" title="Yaowen Chang: interactive Earth with orbiting satellites and animated introduction" style="display:block;width:100%;height:420px;border:0;" scrolling="no"></iframe>
+    <iframe id="interactive-earth-frame" src="{{ '/assets/interactive-earth.html' | relative_url }}?intro=1&amp;v=campus2" title="Yaowen Chang: interactive Earth with orbiting satellites and animated introduction" style="display:block;width:100%;height:420px;border:0;" scrolling="no"></iframe>
   </div>
   <script>
     (function () {
@@ -597,7 +597,7 @@ html.campus-flying #interactive-earth-frame{opacity:0;transition:opacity 1.3s}
 @media(prefers-reduced-motion:reduce){#campus-flight{transition:none}}
 </style>
 <script src="{{ '/assets/vendor/leaflet/leaflet.js' | relative_url }}"></script>
-<script src="{{ '/assets/campus-flight.js' | relative_url }}"></script>
+<script src="{{ '/assets/campus-flight.js' | relative_url }}?v=2"></script>
 </body>
 </html>
 
